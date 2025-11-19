@@ -48,9 +48,6 @@ public class Constants {
 
             //.rightFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
 
-
-
-
     //不确定odo是不是这个"goBILDA Pinpoint Odometry Computer"
     public static PinpointConstants localizerConstants = new PinpointConstants()
             .forwardPodY(3.8) //这个要改，应该就是之前测过的odo的offsetx和offsety，单位是inch
