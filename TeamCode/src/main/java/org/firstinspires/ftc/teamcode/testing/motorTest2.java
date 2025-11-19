@@ -19,7 +19,7 @@ public class motorTest2 extends LinearOpMode {
     public static boolean reverse = false;
     public static double motor_pow = 0.1;
 
-    public static String motor_name1 = "ShooterMotor" ;
+    public static String motor_name1 = "shooter" ;
     private DcMotorEx motor0 = null;
 
 
@@ -37,7 +37,7 @@ public class motorTest2 extends LinearOpMode {
             if (!read_only) {
                 motor0.setPower(motor_pow);
 
-                telemetry_M.addData("leftFront", motor0.getPower());
+                telemetry_M.addData("power", motor0.getPower());
 
                 telemetry_M.update();
             } else if (read_only) {

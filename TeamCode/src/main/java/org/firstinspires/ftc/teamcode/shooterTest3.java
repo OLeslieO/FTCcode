@@ -16,13 +16,14 @@ public class shooterTest3 extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        double targetVelocity = -500;
+        double targetVelocity = -1500;
         double currentVelocity;
 
 
 
-        DcMotorEx shooterMotor = hardwareMap.get(DcMotorEx.class, "shooterMotor");
-        DcMotorEx preShooterMotor = hardwareMap.get(DcMotorEx.class, "preShooterMotor");
+        DcMotorEx shooterMotor = hardwareMap.get(DcMotorEx.class, "shooter");
+        DcMotorEx preShooterMotor = hardwareMap.get(DcMotorEx.class, "preShooter");
+        DcMotorEx midShooterMotor = hardwareMap.get(DcMotorEx.class, "midShooter");
 
 
 
@@ -47,12 +48,15 @@ public class shooterTest3 extends LinearOpMode {
 
 
 
-            if (Math.abs(currentVelocity-targetVelocity) <= 20) {
+            if (Math.abs(currentVelocity-targetVelocity) <= 40) {
                 preShooterMotor.setPower(1);
+                midShooterMotor.setPower(-1);
+
 
 
             } else {
                 preShooterMotor.setPower(0);
+                midShooterMotor.setPower(0);
             }
 
 
