@@ -1,9 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "IntakeTest")
@@ -14,6 +17,7 @@ public class IntakeTest extends LinearOpMode {
     private DcMotorEx shooterMotorR;
     private DcMotorEx shooterMotorL;
     private DcMotorEx intakeMotor;
+    IMU imu;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -27,6 +31,9 @@ public class IntakeTest extends LinearOpMode {
         DcMotorEx shooterMotor = hardwareMap.get(DcMotorEx.class,"shooter");
         DcMotorEx preShooterMotor = hardwareMap.get(DcMotorEx.class,"preShooter");
         DcMotorEx intakeMotor = hardwareMap.get(DcMotorEx.class,"intake");
+
+
+
 
 
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -51,13 +58,13 @@ public class IntakeTest extends LinearOpMode {
             telemetry.addData("Difference", Math.abs(currentVelocity-targetVelocity));
             telemetry.update();
 
-            if (gamepad1.right_bumper){
+            if (gamepad2.right_bumper){
                 intakeMotor.setPower(-1);
             } else {
                 intakeMotor.setPower(0);
             }
 
-            if ((Math.abs(currentVelocity-targetVelocity) <= 60) && (gamepad1.left_bumper)) {
+            if ((Math.abs(currentVelocity-targetVelocity) <= 60) && (gamepad2.left_bumper)) {
                 preShooterMotor.setPower(1);
 
             } else {

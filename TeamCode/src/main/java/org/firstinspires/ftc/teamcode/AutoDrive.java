@@ -19,29 +19,33 @@ public class AutoDrive extends OpMode {
     private Timer pathTimer, actionTimer, opmodeTimer;
 
     private int pathState;
-    private final Pose startPose = new Pose(72, 16, Math.toRadians(90)); // Start Pose of our robot.
-    private final Pose scorePose = new Pose(38, 112, Math.toRadians(140));// Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
+    private final Pose startPose = new Pose(26.069, 122.085, Math.toRadians(142)); // Start Pose of our robot.
+    private final Pose scorePose = new Pose(50, 96, Math.toRadians(140));// Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
 
-    private final Pose pickup1Pose = new Pose(38, 34, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
+    private final Pose pickup1Pose1 = new Pose(42.832, 83.5, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
+    private final Pose pickup1Pose2 = new Pose(22.861,83.5,Math.toRadians(180));
+
+
+
 
     private PathChain motion1,motion2,motion3;
 
     public void buildPaths() {
 
         motion1 = follower.pathBuilder()
-                .addPath(new BezierLine(startPose,pickup1Pose))
-                .setLinearHeadingInterpolation(startPose.getHeading(), pickup1Pose.getHeading())
-                .setBrakingStrength(0.1)
+                .addPath(new BezierLine(startPose,pickup1Pose1))
+                .setLinearHeadingInterpolation(startPose.getHeading(), pickup1Pose1.getHeading())
+                .setBrakingStrength(0.9)
                 .build();
         motion2 = follower.pathBuilder()
-                .addPath(new BezierLine(pickup1Pose, scorePose))
-                .setLinearHeadingInterpolation(pickup1Pose.getHeading(), scorePose.getHeading())
-                .setBrakingStrength(0.1)
+                .addPath(new BezierLine(pickup1Pose1, pickup1Pose2))
+                .setLinearHeadingInterpolation(pickup1Pose1.getHeading(), pickup1Pose2.getHeading())
+                .setBrakingStrength(0.9)
                 .build();
         motion3 = follower.pathBuilder()
-                .addPath(new BezierLine(scorePose,pickup1Pose))
-                .setLinearHeadingInterpolation(scorePose.getHeading(),pickup1Pose.getHeading())
-                .setBrakingStrength(0.1)
+                .addPath(new BezierLine(pickup1Pose2,scorePose))
+                .setLinearHeadingInterpolation(pickup1Pose2.getHeading(),scorePose.getHeading())
+                .setBrakingStrength(0.9)
                 .build();
 
 
@@ -77,49 +81,10 @@ public class AutoDrive extends OpMode {
 
                     /* Since this is a pathChain, we can have Pedro hold the end point while we are scoring the sample */
                     follower.followPath(motion3,true);
-                    setPathState(3);
-                }
-                break;
-            case 3:
-                /* This case checks the robot's position and will wait until the robot position is close (1 inch away) from the scorePose's position */
-                if(!follower.isBusy()) {
-                    /* Score Sample */
-
-                    /* Since this is a pathChain, we can have Pedro hold the end point while we are grabbing the sample */
-                    follower.followPath(motion2,true);
-                    setPathState(4);
-                }
-                break;
-            case 4:
-                /* This case checks the robot's position and will wait until the robot position is close (1 inch away) from the pickup2Pose's position */
-                if(!follower.isBusy()) {
-                    /* Grab Sample */
-
-                    /* Since this is a pathChain, we can have Pedro hold the end point while we are scoring the sample */
-                    follower.followPath(motion3,true);
-                    setPathState(5);
-                }
-                break;
-            case 5:
-                /* This case checks the robot's position and will wait until the robot position is close (1 inch away) from the scorePose's position */
-                if(!follower.isBusy()) {
-                    /* Score Sample */
-
-                    /* Since this is a pathChain, we can have Pedro hold the end point while we are grabbing the sample */
-                    follower.followPath(motion2,true);
-                    setPathState(6);
-                }
-                break;
-            case 6:
-                /* This case checks the robot's position and will wait until the robot position is close (1 inch away) from the pickup3Pose's position */
-                if(!follower.isBusy()) {
-                    /* Grab Sample */
-
-                    /* Since this is a pathChain, we can have Pedro hold the end point while we are scoring the sample */
-                    follower.followPath(motion3, true);
                     setPathState(-1);
                 }
                 break;
+
 
         }
     }

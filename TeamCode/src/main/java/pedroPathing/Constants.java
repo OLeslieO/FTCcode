@@ -7,26 +7,30 @@ import com.pedropathing.follower.FollowerConstants;
 import com.pedropathing.ftc.FollowerBuilder;
 import com.pedropathing.ftc.drivetrains.MecanumConstants;
 import com.pedropathing.ftc.localization.Encoder;
-import com.pedropathing.ftc.localization.constants.DriveEncoderConstants;
+
 import com.pedropathing.ftc.localization.constants.PinpointConstants;
 import com.pedropathing.paths.PathConstraints;
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class Constants {
     public static FollowerConstants followerConstants = new FollowerConstants()
-        .mass(2.5)
-        .forwardZeroPowerAcceleration(-25.7425)
-        .lateralZeroPowerAcceleration(-45.1)
-        .translationalPIDFCoefficients(new PIDFCoefficients(0.04, 0, 0.005, 0.02))
-        .headingPIDFCoefficients(new PIDFCoefficients(0.6, 0, 0.03, 0.03))
-        .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.025,0.0,1e-5,0.6,0.01))
-        .centripetalScaling(0.005);
 
-    public static PathConstraints pathConstraints = new PathConstraints(0.99, 100, 1, 1);
+         .useSecondaryDrivePIDF(true)
+
+        .mass(10)
+        .forwardZeroPowerAcceleration(-33.45111)
+        .lateralZeroPowerAcceleration(-58.998)
+        .translationalPIDFCoefficients(new PIDFCoefficients(0.08, 0, 0.0005, 0.02))
+        .headingPIDFCoefficients(new PIDFCoefficients(0.6, 0, 0.01, 0.02))
+        .drivePIDFCoefficients(new FilteredPIDFCoefficients(1,0.0,0.015,0.6,0.019))
+        .centripetalScaling(0.0006);
+
+    public static PathConstraints pathConstraints = new PathConstraints(0.99, 100, 1.5
+            , 2.5);
 
     public static Follower createFollower(HardwareMap hardwareMap) {
         return new FollowerBuilder(followerConstants, hardwareMap)
@@ -43,18 +47,19 @@ public class Constants {
             .rightRearMotorName("rightRear")
             .leftRearMotorName("leftRear")
             .leftFrontMotorName("leftFront")
-            .xVelocity(87.4514)
-            .yVelocity(69.3625);
+            .xVelocity(82.093178)
+            .yVelocity(69.54082);
 
             //.rightFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
 
     //不确定odo是不是这个"goBILDA Pinpoint Odometry Computer"
     public static PinpointConstants localizerConstants = new PinpointConstants()
-            .forwardPodY(3.8) //这个要改，应该就是之前测过的odo的offsetx和offsety，单位是inch
-            .strafePodX(3.8)
+            .forwardPodY(1.57) //这个要改，应该就是之前测过的odo的offsetx和offsety，单位是inch
+            .strafePodX(4.72)
             .distanceUnit(DistanceUnit.INCH)
             .hardwareMapName("pinpoint")
             .encoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD)
-            .forwardEncoderDirection(GoBildaPinpointDriver.EncoderDirection.REVERSED)
+            .forwardEncoderDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD)
             .strafeEncoderDirection(GoBildaPinpointDriver.EncoderDirection.REVERSED);
+
 }
