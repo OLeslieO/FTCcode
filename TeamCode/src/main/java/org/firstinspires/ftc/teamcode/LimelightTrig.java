@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
 
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
-import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -16,7 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 
 
 @TeleOp(name="nancy")
-public class MecanumDrive extends LinearOpMode {
+public class LimelightTrig extends LinearOpMode {
     //    private Limelight3A cameraFront;
     private GoBildaPinpointDriver odo;
     private double angle;

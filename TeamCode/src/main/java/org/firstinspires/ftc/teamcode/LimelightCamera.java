@@ -12,7 +12,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 @TeleOp(name = "Limelighttest")
-public class limelight extends LinearOpMode {
+public class LimelightCamera extends LinearOpMode {
 
     private Limelight3A limelight;
 

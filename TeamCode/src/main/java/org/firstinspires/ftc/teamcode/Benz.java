@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name = "Shooter")
-public class Shooter extends LinearOpMode {
+@TeleOp(name = "benz")
+public class Benz extends LinearOpMode {
 
 
 
