@@ -74,7 +74,7 @@ public class AutoDrive extends OpMode {
                 if(!follower.isBusy()) {
                     if (actionTimer.getElapsedTime() > 0.5) {  // 延迟0.5秒后启动intake
 
-                        Intake.intakeIn();
+                        
                     }
                     /* Score Preload */
 

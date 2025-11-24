@@ -90,11 +90,12 @@ public class AutoShooterTest extends OpMode {
 
                 /* This case checks the robot's position and will wait until the robot position is close (1 inch away) from the scorePose's position */
                 if(!follower.isBusy()) {
-                    if (actionTimer.getElapsedTime() > 0.1) {
-                        intake.setDefaultCommand(intakeAutoCommand);
 
 
-                    }
+
+
+
+
                     /* Score Preload */
 
                     /* Since this is a pathChain, we can have Pedro hold the end point while we are grabbing the sample */
@@ -105,6 +106,7 @@ public class AutoShooterTest extends OpMode {
             case 2:
                 /* This case checks the robot's position and will wait until the robot position is close (1 inch away) from the pickup1Pose's position */
                 if(!follower.isBusy()) {
+                    shooter.startPreShooter();
                     /* Grab Sample */
 
 
@@ -112,13 +114,7 @@ public class AutoShooterTest extends OpMode {
                     /* Since this is a pathChain, we can have Pedro hold the end point while we are scoring the sample */
                     follower.followPath(motion3,true);
 
-                    ShooterAutoCommand.schedule();
-                    shooterTimer.resetTimer();
-                    if (shooterTimer.getElapsedTime() > 15.0) {
-                        // 在15秒后停止射击
-                        shooter.stopShooter(); // 停止射击
-                        ShooterAutoCommand.cancel(); // 取消射击命令
-                    }// 重置计时器
+
 
                     setPathState(-1);
                 }
@@ -134,6 +130,8 @@ public class AutoShooterTest extends OpMode {
     }
     @Override
     public void loop() {
+        shooter.startShooter();
+        intake.setDefaultCommand(intakeAutoCommand);
 
         follower.update();
 
@@ -166,12 +164,12 @@ public class AutoShooterTest extends OpMode {
         opmodeTimer = new Timer();
         opmodeTimer.resetTimer();
 
-        // 初始化机器人子系统
+        //
         follower = Constants.createFollower(hardwareMap);
         intake = new Intake(hardwareMap);
         shooter = new Shooter(hardwareMap);
 
-        // 初始化命令
+        //
         intakeAutoCommand = new IntakeAutoCommand(intake);
         ShooterAutoCommand = new ShooterAutoCommand(shooter);
 

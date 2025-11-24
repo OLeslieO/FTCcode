@@ -21,7 +21,7 @@ public class IntakeTest extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        double targetVelocity = -1200;
+        double targetVelocity ;
         double currentVelocity;
 
         DcMotorEx frontLeftMotor = hardwareMap.get(DcMotorEx.class,"leftFront");
@@ -52,25 +52,57 @@ public class IntakeTest extends LinearOpMode {
         waitForStart();
 
         while(opModeIsActive()) {
-            shooterMotor.setVelocity(targetVelocity);
-            currentVelocity = shooterMotor.getVelocity();
-            telemetry.addData("currentVelocity", shooterMotor.getVelocity());
-            telemetry.addData("Difference", Math.abs(currentVelocity-targetVelocity));
-            telemetry.update();
 
-            if (gamepad2.right_bumper){
+            currentVelocity = shooterMotor.getVelocity();
+
+            if(gamepad1.dpad_up){
+                shooterMotor.setVelocity(-900);
+                targetVelocity = -900;
+                if (Math.abs(currentVelocity-targetVelocity) <= 80){
+                    preShooterMotor.setPower(-1);
+                }
+
+            } else if (gamepad1.left_bumper){
+                shooterMotor.setVelocity(-1200);
+                targetVelocity = -1200;
+                if (Math.abs(currentVelocity-targetVelocity) <= 80){
+                    preShooterMotor.setPower(-1);
+                }
+
+            } else if (gamepad1.triangle) {
+                shooterMotor.setVelocity(-1800);
+                targetVelocity = -1800;
+                if (Math.abs(currentVelocity-targetVelocity) <= 80){
+                    preShooterMotor.setPower(-1);
+                }
+
+
+            } else {
+                targetVelocity = -700;
+                shooterMotor.setVelocity(-700);
+                preShooterMotor.setPower(0);
+            }
+
+
+            if (gamepad1.right_bumper){
                 intakeMotor.setPower(-1);
             } else {
                 intakeMotor.setPower(0);
             }
+            telemetry.addData("currentVelocity", shooterMotor.getVelocity());
+            telemetry.addData("Difference", Math.abs(currentVelocity-targetVelocity));
+            telemetry.update();
 
-            if ((Math.abs(currentVelocity-targetVelocity) <= 60) && (gamepad2.left_bumper)) {
+            /*
+            if ((Math.abs(currentVelocity-targetVelocity) <= 100) && (gamepad1.left_bumper)) {
+
                 preShooterMotor.setPower(1);
 
             } else {
                 preShooterMotor.setPower(0);
 
             }
+            */
 
             double y = -gamepad1.left_stick_y;
             double x = gamepad1.left_stick_x * 1.1;
@@ -88,7 +120,7 @@ public class IntakeTest extends LinearOpMode {
             backLeftMotor.setPower(backLeftPower * powerCoefficient);
             frontRightMotor.setPower(frontRightPower * powerCoefficient);
             backRightMotor.setPower(backRightPower * powerCoefficient);
-            }
         }
     }
+}
 
