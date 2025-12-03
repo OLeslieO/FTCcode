@@ -4,9 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp(name="Chasis")
 public class Chasis extends LinearOpMode {
@@ -14,10 +11,10 @@ public class Chasis extends LinearOpMode {
     public void runOpMode() {
 
 
-        DcMotorEx frontLeftMotor = hardwareMap.get(DcMotorEx.class,"leftFrontMotor");
-        DcMotorEx backLeftMotor = hardwareMap.get(DcMotorEx.class,"leftBackMotor");
-        DcMotorEx frontRightMotor = hardwareMap.get(DcMotorEx.class,"rightFrontMotor");
-        DcMotorEx backRightMotor = hardwareMap.get(DcMotorEx.class,"rightBackMotor");
+        DcMotorEx frontLeftMotor = hardwareMap.get(DcMotorEx.class,"leftFront");
+        DcMotorEx backLeftMotor = hardwareMap.get(DcMotorEx.class,"leftRear");
+        DcMotorEx frontRightMotor = hardwareMap.get(DcMotorEx.class,"rightFront");
+        DcMotorEx backRightMotor = hardwareMap.get(DcMotorEx.class,"rightRear");
 
         frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
 
