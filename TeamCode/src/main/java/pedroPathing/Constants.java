@@ -1,7 +1,5 @@
 package pedroPathing;
 
-import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.RADIANS;
-
 import com.pedropathing.control.FilteredPIDFCoefficients;
 import com.pedropathing.control.PIDFCoefficients;
 import com.pedropathing.follower.Follower;
@@ -10,8 +8,10 @@ import com.pedropathing.ftc.FollowerBuilder;
 import com.pedropathing.ftc.drivetrains.MecanumConstants;
 import com.pedropathing.ftc.localization.constants.OTOSConstants;
 import com.pedropathing.paths.PathConstraints;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class Constants {
@@ -19,10 +19,10 @@ public class Constants {
 
          .useSecondaryDrivePIDF(true)
 
-        .mass(10)
-        .forwardZeroPowerAcceleration(-33.45111)
-        .lateralZeroPowerAcceleration(-58.998)
-        .translationalPIDFCoefficients(new PIDFCoefficients(0.08, 0, 0.0005, 0.02))
+        .mass(4)
+        .forwardZeroPowerAcceleration(-26.99)
+        .lateralZeroPowerAcceleration(-50.48)
+        .translationalPIDFCoefficients(new PIDFCoefficients(0.053, 0, 0.003, 0.02))
         .headingPIDFCoefficients(new PIDFCoefficients(0.6, 0, 0.01, 0.02))
         .drivePIDFCoefficients(new FilteredPIDFCoefficients(1,0.0,0.015,0.6,0.019))
         .centripetalScaling(0.0006);
@@ -45,15 +45,23 @@ public class Constants {
             .rightRearMotorName("rightRear")
             .leftRearMotorName("leftRear")
             .leftFrontMotorName("leftFront")
-            .xVelocity(82.093178)
-            .yVelocity(69.54082);
+
+            .rightFrontMotorDirection(DcMotorEx.Direction.REVERSE)
+            .leftFrontMotorDirection(DcMotorEx.Direction.FORWARD)
+            .leftRearMotorDirection(DcMotorEx.Direction.FORWARD)
+            .rightRearMotorDirection(DcMotorEx.Direction.REVERSE)
+            .xVelocity(82.28)
+            .yVelocity(74.57);
 
             //.rightFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
 
     public static OTOSConstants localizerConstants = new OTOSConstants()
             .hardwareMapName("otos")
             .linearUnit(DistanceUnit.INCH)
-            .angleUnit(RADIANS)
+            .angleUnit(AngleUnit.RADIANS)
+            .angularScalar(0.99)
+
+
     .linearScalar(1);
 
 
