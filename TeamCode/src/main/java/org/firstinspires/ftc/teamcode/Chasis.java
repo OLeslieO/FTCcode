@@ -16,22 +16,42 @@ public class Chasis extends LinearOpMode {
         DcMotorEx frontRightMotor = hardwareMap.get(DcMotorEx.class,"rightFront");
         DcMotorEx backRightMotor = hardwareMap.get(DcMotorEx.class,"rightRear");
 
-        frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
+
+
+        frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
+
+
+
+        backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
 
 
         waitForStart();
 
         while (opModeIsActive()){
-            double x = gamepad1.left_stick_x;
+            telemetry.addData("Leftfront",frontLeftMotor.getPower());
+            telemetry.addData("rightfront",frontRightMotor.getPower());
+            telemetry.addData("leftback",backLeftMotor.getPower());
+            telemetry.addData("rightback",backRightMotor.getPower());
+            telemetry.update();
+
+
+
             double y = -gamepad1.left_stick_y;
-            double rx = -gamepad1.right_stick_x;
+            double x = -gamepad1.left_stick_x * 1.1;
+            double rx = gamepad1.right_stick_x;
 
-            double a = Math.max(Math.abs(x)+ Math.abs(y)+ Math.abs(rx), 1);
+            double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+            double frontLeftPower = (y + x + rx) / denominator;
+            double backLeftPower = (y - x + rx) / denominator;
+            double frontRightPower = (y - x - rx) / denominator;
+            double backRightPower = (y + x - rx) / denominator;
 
-            frontLeftMotor.setPower((y + x + rx) / a);
-            backLeftMotor.setPower((y-x+rx)/a);
-            frontRightMotor.setPower((y-x-rx)/a);
-            backRightMotor.setPower((y+x-rx)/a);
+            double powerCoefficient = 1.0;
+
+            frontLeftMotor.setPower(frontLeftPower * powerCoefficient);
+            backLeftMotor.setPower(backLeftPower * powerCoefficient);
+            frontRightMotor.setPower(frontRightPower * powerCoefficient);
+            backRightMotor.setPower(backRightPower * powerCoefficient);
         }
     }
 }
