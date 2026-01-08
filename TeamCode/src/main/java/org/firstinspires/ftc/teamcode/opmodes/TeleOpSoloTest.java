@@ -38,6 +38,8 @@ public class TeleOpSoloTest extends CommandOpModeEx {
 
     public boolean isVelocityDetecting = false;
 
+    public boolean isLongShooting = false;
+
 
     @Override
     public void initialize() {
@@ -139,12 +141,9 @@ public class TeleOpSoloTest extends CommandOpModeEx {
                                 new InstantCommand(() -> shooter.accelerate_slow())
                         )
                 );
-        new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.Y)
-                && !isLimitOn)
-                .whenPressed(new InstantCommand(()->shooter.accelerate_slow()))
-                .whenReleased(new InstantCommand(()->shooter.accelerate_slow()));
 
-        new ButtonEx(()->Math.abs(gamepadEx1.getRightY())>0.7
+
+        new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.Y)
                 && !isLimitOn)
                 .whenPressed(new SequentialCommandGroup(
                         new InstantCommand(()->isVelocityDetecting= true),
