@@ -9,6 +9,8 @@ import com.arcrobotics.ftclib.command.WaitCommand;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
+import org.firstinspires.ftc.teamcode.commands.AccelerateAutoCommand;
+import org.firstinspires.ftc.teamcode.commands.IntakeAutoCommand;
 //import com.pedropathing.localization.Pose;
 //import com.pedropathing.pathgen.Point;
 
@@ -19,19 +21,61 @@ public class AutoCommand {
 
 
 
+    public Command accelSlow(AccelerateAutoCommand accel) {
+        return new InstantCommand(
+                () -> accel.setState(AccelerateAutoCommand.AccelState.SLOW)
+        );
+    }
+
+    public Command accelMid(AccelerateAutoCommand accel) {
+        return new InstantCommand(
+                () -> accel.setState(AccelerateAutoCommand.AccelState.MID)
+        );
+    }
+
+    public Command intakeAuto(IntakeAutoCommand intakeAutoCommand){
+        return new InstantCommand(
+                ()-> intakeAutoCommand.setState(IntakeAutoCommand.IntakeState.INTAKE)
+        );
+    }
+
+
+
+
+
+
+
+
     public AutoCommand(Shooter shooter, Intake intake) {
         this.shooter = shooter;
         this.intake = intake;
     }
-
-
     public Command accelerateSlow() {
-        return new RunCommand(() -> shooter.accelerate_slow());
+        return new RunCommand(shooter::accelerate_slow) {
+            @Override
+            public void end(boolean interrupted) {
+                shooter.stopAccelerate();
+            }
+        };
     }
 
     public Command accelerateMid() {
-        return new RunCommand(() -> shooter.accelerate_mid());
+        return new RunCommand(shooter::accelerate_mid) {
+            @Override
+            public void end(boolean interrupted) {
+                shooter.stopAccelerate();
+            }
+        };
     }
+
+
+//    public Command accelerateSlow() {
+//        return new RunCommand(() -> shooter.accelerate_slow());
+//    }
+//
+//    public Command accelerateMid() {
+//        return new RunCommand(() -> shooter.accelerate_mid());
+//    }
 
     public Command accelerateFast() {
         return new RunCommand(() -> shooter.accelerate_fast());

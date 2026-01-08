@@ -11,6 +11,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
+import org.firstinspires.ftc.teamcode.commands.AccelerateAutoCommand;
+import org.firstinspires.ftc.teamcode.commands.IntakeAutoCommand;
 
 import pedroPathing.Constants;
 
@@ -23,6 +25,10 @@ public abstract class AutoCommandBase extends LinearOpMode {
     protected Follower follower;
 
     protected AutoCommand autoCommand;
+
+    protected AccelerateAutoCommand accCommand;
+
+    protected IntakeAutoCommand intakeAutoCommand;
 
     public abstract Command runAutoCommand();
 
@@ -38,6 +44,9 @@ public abstract class AutoCommandBase extends LinearOpMode {
         shooter = new Shooter(hardwareMap);
 
         intake = new Intake(hardwareMap);
+        accCommand = new AccelerateAutoCommand(shooter);
+        intakeAutoCommand = new IntakeAutoCommand(intake);
+
 
         this.autoCommand = new AutoCommand(shooter,intake);
 
@@ -47,14 +56,19 @@ public abstract class AutoCommandBase extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         initialize();
+        waitForStart();
 
         Command toRun = runAutoCommand();//.andThen(autoFinish());
 
         CommandScheduler.getInstance().schedule(toRun);
+        CommandScheduler.getInstance().schedule(accCommand);
+        CommandScheduler.getInstance().schedule(intakeAutoCommand);
 
 
 
-        waitForStart();
+
+
+
 
         while (opModeIsActive() && !isStopRequested()) {
             periodic();
