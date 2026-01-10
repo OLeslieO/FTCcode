@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
@@ -18,22 +17,22 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.LED;
-import org.firstinspires.ftc.teamcode.Subsystems.shooter.Shooter;
 import org.firstinspires.ftc.teamcode.Subsystems.driving.NewMecanumDrive;
+import org.firstinspires.ftc.teamcode.Subsystems.shooter.Shooter;
+import org.firstinspires.ftc.teamcode.commands.PedroAutoShootAdjustCommand;
 import org.firstinspires.ftc.teamcode.commands.PreLimitCommand;
-import org.firstinspires.ftc.teamcode.commands.ShootAutoAdjustCommand;
 import org.firstinspires.ftc.teamcode.commands.TeleOpDriveCommand;
 import org.firstinspires.ftc.teamcode.utils.ButtonEx;
 
 import pedroPathing.Constants;
 
-@TeleOp(group = "0-competition", name = "TeleOp Solo Test 3")
-public class TeleOpSoloTest3 extends CommandOpModeEx {
+@TeleOp(group = "0-competition", name = "TeleOp Solo Test 2")
+public class TeleOpSoloTest2 extends CommandOpModeEx {
     GamepadEx gamepadEx1, gamepadEx2;
     NewMecanumDrive driveCore;
     PreLimitCommand preLimitCommand;
 
-    ShootAutoAdjustCommand autoShootAdjustCommand;
+    PedroAutoShootAdjustCommand pedroAutoShootAdjustCommand;
 
     Shooter shooter;
     Intake intake;
@@ -82,7 +81,7 @@ public class TeleOpSoloTest3 extends CommandOpModeEx {
                 ()->(isVelocityDetecting),
                 ()->(isLimitOn),
                 ()->(isShooting));
-        driveCore.setPoseEstimate(new Pose2d(0, 0, 0));
+
 
 
         driveCore.resetHeading();
@@ -97,9 +96,9 @@ public class TeleOpSoloTest3 extends CommandOpModeEx {
         CommandScheduler.getInstance().schedule(driveCommand);
         CommandScheduler.getInstance().schedule(preLimitCommand);
         CommandScheduler.getInstance().schedule(
-                new ShootAutoAdjustCommand(
+                new PedroAutoShootAdjustCommand(
                         shooter,
-                        driveCore,
+                        follower,
                         () -> isAutoShoot,
                         () -> isLimitOn
                 )
@@ -214,13 +213,8 @@ public class TeleOpSoloTest3 extends CommandOpModeEx {
         Vector2d robotVel = driveCore.getRobotLinearVelocity();
         if(isAutoShoot)telemetry.addLine("AutoShoot");
         else telemetry.addLine("Not Auto Shoot");
-        telemetry.addData("Pose", driveCore.getPoseEstimate());
-
-
-
         telemetry.addData("Pedro Pose", follower.getPose());
-
-
+        telemetry.addData("shooter velocity", shooter.shooterDown.getVelocity());
         telemetry.addData("Robot vx (in/s)", robotVel.getX());
         telemetry.addData("Robot vy (in/s)", robotVel.getY());
         telemetry.addData("Robot speed", Math.hypot(robotVel.getX(), robotVel.getY()));
@@ -228,8 +222,6 @@ public class TeleOpSoloTest3 extends CommandOpModeEx {
         telemetry.addData("RF vel", driveCore.rightFront.getVelocity());
         telemetry.addData("LR vel", driveCore.leftRear.getVelocity());
         telemetry.addData("RR vel", driveCore.rightRear.getVelocity());
-        telemetry.addData("shooter velocity", shooter.shooterDown.getVelocity());
-        telemetry.addData("Heading", Math.toDegrees(driveCore.getHeading()));
         if(isFieldCentric) telemetry.addLine("Field Centric");
         else telemetry.addLine("Robot Centric");
         if(isLimitOn) telemetry.addLine("Limit On");

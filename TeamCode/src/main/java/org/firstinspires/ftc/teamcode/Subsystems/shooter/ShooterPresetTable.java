@@ -1,4 +1,7 @@
-package org.firstinspires.ftc.teamcode.Subsystems.Constants;
+package org.firstinspires.ftc.teamcode.Subsystems.shooter;
+
+import org.firstinspires.ftc.teamcode.Subsystems.Constants.MotorConstants;
+import org.firstinspires.ftc.teamcode.Subsystems.Constants.ServoConstants;
 
 import java.util.EnumMap;
 

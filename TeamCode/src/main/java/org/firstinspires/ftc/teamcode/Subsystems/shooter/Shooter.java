@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Subsystems;
+package org.firstinspires.ftc.teamcode.Subsystems.shooter;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -8,22 +8,15 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Constants.MotorConstants;
 import org.firstinspires.ftc.teamcode.Subsystems.Constants.ServoConstants;
-import org.firstinspires.ftc.teamcode.Subsystems.Constants.ShootZone;
 
 public class Shooter {
     public DcMotorEx shooterDown, shooterUp, preShooter;
     public  Servo shooterAngleServo;
 
-    private double targetRightPosition;
-    private double targetLeftPosition;
-
-    private double currentRightPosition;
-    private double currentLeftPosition;
 
     private double targetVelocity;
 
     public boolean isAsTargetVelocity;
-    public double currentVelocity;
 
     private double powerScale = 1.0;
 
@@ -34,8 +27,6 @@ public class Shooter {
         this.shooterUp = hardwareMap.get(DcMotorEx.class, "shooterUp");
         this.preShooter = hardwareMap.get(DcMotorEx.class, "preShooter");
         this.shooterAngleServo = hardwareMap.get(Servo.class,"shooterAngle");
-
-//        this.indicatorLight = hardwareMap.get(Servo.class,"indicatorLight");
 
         shooterDown.setDirection(DcMotorSimple.Direction.REVERSE);
         shooterUp.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -59,23 +50,6 @@ public class Shooter {
     public void setPowerScale(double scale) {
         powerScale = scale;
     }
-
-
-//    public void servosetpositon_mid_4(){
-//        shooterAngleServo.setPosition(ServoConstants.SHOOTER_TURRET_MID.value);
-//    }
-//    public void servosetpositon_mid_3(){
-//        shooterAngleServo.setPosition(ServoConstants.SHOOTER_TURRET_MID.value+0.02);
-//
-//    }
-//    public void servosetpositon_mid_2(){
-//        shooterAngleServo.setPosition(ServoConstants.SHOOTER_TURRET_MID.value+0.04);
-//    }
-//    public void servosetpositon_mid_1(){
-//        shooterAngleServo.setPosition(ServoConstants.SHOOTER_TURRET_MID.value+0.06);
-//
-//    }
-
 
 
 

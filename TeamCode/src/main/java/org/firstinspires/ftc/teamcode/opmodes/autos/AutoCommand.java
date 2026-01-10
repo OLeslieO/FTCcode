@@ -8,7 +8,7 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
-import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
+import org.firstinspires.ftc.teamcode.Subsystems.shooter.Shooter;
 import org.firstinspires.ftc.teamcode.commands.autos.AccelerateAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.autos.IntakeAutoCommand;
 //import com.pedropathing.localization.Pose;

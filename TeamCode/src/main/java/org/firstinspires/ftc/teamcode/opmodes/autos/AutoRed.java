@@ -15,7 +15,7 @@ package org.firstinspires.ftc.teamcode.opmodes.autos;//package org.firstinspires
 //import com.pedropathing.pathgen.PathChain;
 //import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 //import org.firstinspires.ftc.teamcode.Subsystems.Intake;
-//import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
+//import org.firstinspires.ftc.teamcode.Subsystems.shooter.Shooter;
 //import org.firstinspires.ftc.teamcode.commands.autos.driveAutoCommand;
 //import org.firstinspires.ftc.teamcode.utils.FollowerEx;
 //import pedroPathing.constants.FConstants;

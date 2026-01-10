@@ -4,44 +4,36 @@ import com.arcrobotics.ftclib.command.CommandBase;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.Pose;
 
-import org.firstinspires.ftc.teamcode.Subsystems.Constants.ShootZone;
-import org.firstinspires.ftc.teamcode.Subsystems.Constants.ShootZoneConstants;
-import org.firstinspires.ftc.teamcode.Subsystems.Constants.ShooterPreset;
-import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
+import org.firstinspires.ftc.teamcode.Subsystems.shooter.ShootZone;
+import org.firstinspires.ftc.teamcode.Subsystems.shooter.ShootZoneConstants;
+import org.firstinspires.ftc.teamcode.Subsystems.shooter.Shooter;
 
-import java.util.EnumMap;
 import java.util.function.BooleanSupplier;
 
 public class PedroAutoShootAdjustCommand extends CommandBase {
 
     private final Shooter shooter;
     private final Follower follower;
-    private final BooleanSupplier enabled;
+    private final BooleanSupplier isAutoShoot;
+    private final BooleanSupplier isLimitOn;
 
-    private ShootZone lastZone = null;
-
-    private final EnumMap<ShootZone, ShooterPreset> presets =
-            new EnumMap<>(ShootZone.class);
 
     public PedroAutoShootAdjustCommand(
             Shooter shooter,
             Follower follower,
-            BooleanSupplier enabled
+            BooleanSupplier isAutoShoot, BooleanSupplier isLimitOn
     ) {
         this.shooter = shooter;
         this.follower = follower;
-        this.enabled = enabled;
+        this.isAutoShoot = isAutoShoot;
+        this.isLimitOn = isLimitOn;
 
-        presets.put(ShootZone.CLOSE, new ShooterPreset(3200, 0.42));
-        presets.put(ShootZone.MID,   new ShooterPreset(3800, 0.48));
-        presets.put(ShootZone.FAR,   new ShooterPreset(4400, 0.55));
     }
 
     @Override
     public void execute() {
 
-        if (!enabled.getAsBoolean()) {
-            lastZone = null;
+        if (!isAutoShoot.getAsBoolean()) {
             return;
         }
 
@@ -55,10 +47,11 @@ public class PedroAutoShootAdjustCommand extends CommandBase {
         ShootZone zone = ShootZoneConstants.getZone(x, y);
         if (zone == ShootZone.INVALID) return;
 
-        if (zone != lastZone) {
-            ShooterPreset preset = presets.get(zone);
+        if( !isLimitOn.getAsBoolean()){
             shooter.applyZone(zone);
-            lastZone = zone;
+        }
+        else {
+            shooter.accelerate_idle();
         }
     }
 

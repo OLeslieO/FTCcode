@@ -18,7 +18,7 @@ package org.firstinspires.ftc.teamcode.opmodes;//package org.firstinspires.ftc.t
 //import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 //
 //import org.firstinspires.ftc.teamcode.Subsystems.LED;
-//import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
+//import org.firstinspires.ftc.teamcode.Subsystems.shooter.Shooter;
 //import org.firstinspires.ftc.teamcode.Subsystems.driving.NewMecanumDrive;
 //import org.firstinspires.ftc.teamcode.commands.PreLimitCommand;
 //import org.firstinspires.ftc.teamcode.commands.TeleOpDriveCommand;

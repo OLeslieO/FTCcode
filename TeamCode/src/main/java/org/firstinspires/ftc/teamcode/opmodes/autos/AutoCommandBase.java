@@ -10,7 +10,7 @@ import com.pedropathing.geometry.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
-import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
+import org.firstinspires.ftc.teamcode.Subsystems.shooter.Shooter;
 import org.firstinspires.ftc.teamcode.commands.autos.AccelerateAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.autos.IntakeAutoCommand;
 

@@ -3,9 +3,9 @@ package org.firstinspires.ftc.teamcode.commands;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.command.CommandBase;
 
-import org.firstinspires.ftc.teamcode.Subsystems.Constants.ShootZone;
-import org.firstinspires.ftc.teamcode.Subsystems.Constants.ShootZoneConstants;
-import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
+import org.firstinspires.ftc.teamcode.Subsystems.shooter.ShootZone;
+import org.firstinspires.ftc.teamcode.Subsystems.shooter.ShootZoneConstants;
+import org.firstinspires.ftc.teamcode.Subsystems.shooter.Shooter;
 import org.firstinspires.ftc.teamcode.Subsystems.driving.NewMecanumDrive;
 
 import java.util.function.BooleanSupplier;
@@ -40,7 +40,8 @@ public class ShootAutoAdjustCommand extends CommandBase {
 
         if( !isLimitOn.getAsBoolean()){
             shooter.applyZone(zone);
-            lastZone = zone;} else {
+            lastZone = zone;}
+        else {
             shooter.accelerate_idle();
         }
 
