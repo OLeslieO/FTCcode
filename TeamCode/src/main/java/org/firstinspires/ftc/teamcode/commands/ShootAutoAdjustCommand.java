@@ -40,7 +40,8 @@ public class ShootAutoAdjustCommand extends CommandBase {
 
         if( !isLimitOn.getAsBoolean()){
             shooter.applyZone(zone);
-            lastZone = zone;}
+            lastZone = zone;
+        }
         else {
             shooter.accelerate_idle();
         }

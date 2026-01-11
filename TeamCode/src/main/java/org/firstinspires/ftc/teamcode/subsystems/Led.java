@@ -4,11 +4,12 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class Led {
-    public Servo indicatorLight;
+    public Servo indicatorLight, indicatorLight2;
 
 
     public Led(HardwareMap hardwareMap) {
         this.indicatorLight = hardwareMap.get(Servo.class, "indicatorLight");
+        this.indicatorLight2 = hardwareMap.get(Servo.class,"indicatorLight2");
     }
 
     public void setBlue() {
@@ -26,9 +27,12 @@ public class Led {
         indicatorLight.setPosition(0.5);
     }
 
-
     public void setNone(){
         indicatorLight.setPosition(0);
+    }
+
+    public void setBallComplete(){
+        indicatorLight2.setPosition(0.5);
     }
 
 
