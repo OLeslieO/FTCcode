@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.subsystems.intakepreshoot.IntakePreshooter;
-import org.firstinspires.ftc.teamcode.subsystems.LED;
+import org.firstinspires.ftc.teamcode.subsystems.Led;
 import org.firstinspires.ftc.teamcode.subsystems.shooter.Shooter;
 import org.firstinspires.ftc.teamcode.subsystems.driving.NewMecanumDrive;
 import org.firstinspires.ftc.teamcode.commands.PreLimitCommand;
@@ -28,7 +28,7 @@ public class TeleOpSoloTest extends CommandOpModeEx {
     PreLimitCommand preLimitCommand;
     Shooter shooter;
     IntakePreshooter intake;
-    LED led;
+    Led led;
 
     private boolean isFieldCentric=false;
 
@@ -62,7 +62,7 @@ public class TeleOpSoloTest extends CommandOpModeEx {
 //        frontArm.setLED(false);
         shooter = new Shooter(hardwareMap);
 
-        led = new LED(hardwareMap);
+        led = new Led(hardwareMap);
         preLimitCommand = new PreLimitCommand(shooter,
                 intake,
                 led,

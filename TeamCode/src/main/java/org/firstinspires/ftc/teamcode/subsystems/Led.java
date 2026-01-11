@@ -3,11 +3,11 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class LED {
+public class Led {
     public Servo indicatorLight;
 
 
-    public LED(HardwareMap hardwareMap) {
+    public Led(HardwareMap hardwareMap) {
         this.indicatorLight = hardwareMap.get(Servo.class, "indicatorLight");
     }
 
