@@ -46,9 +46,7 @@ public class ShooterTest extends LinearOpMode {
         DcMotorEx intake = hardwareMap.get(DcMotorEx.class, "intake");
         Servo shooterTurret = hardwareMap.get(Servo.class,"shooterAngle");
 
-
         intake.setDirection(DcMotorSimple.Direction.REVERSE);
-
 
         shooterLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
         shooterRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
@@ -64,7 +62,6 @@ public class ShooterTest extends LinearOpMode {
             shooterLeft.setVelocityPIDFCoefficients(setP, setI, setD, setF);
             shooterRight.setVelocityPIDFCoefficients(setP, setI, setD, setF);
             shooterMid.setVelocityPIDFCoefficients(setP, setI, setD, setF);
-
         }
 
         waitForStart();
