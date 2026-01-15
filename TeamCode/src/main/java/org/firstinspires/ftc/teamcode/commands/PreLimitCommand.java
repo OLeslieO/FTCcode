@@ -74,6 +74,7 @@ public class PreLimitCommand extends CommandBase {
 
             if (shooting){
                 intake.limitOff();
+                intake.shoot();
             } else {
                 intake.limitOn();
             }

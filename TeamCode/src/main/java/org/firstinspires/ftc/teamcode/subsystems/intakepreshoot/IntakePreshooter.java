@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Constants.ServoConstants;
 
 public class IntakePreshooter {
 
-    private DcMotorEx intake;
+    private DcMotorEx intake, preShooter;
 
     private Servo preLimit;
     private double powerScale = 1.0;
@@ -19,14 +19,17 @@ public class IntakePreshooter {
 
     public IntakePreshooter(@NonNull HardwareMap hardwareMap){
         this.intake = hardwareMap.get(DcMotorEx.class, "intake");
+        this.preShooter = hardwareMap.get(DcMotorEx.class, "preShooter");
         this.preLimit = hardwareMap.get(Servo.class,"preLimit");
-        intake.setDirection(DcMotorSimple.Direction.FORWARD);
+        intake.setDirection(DcMotorSimple.Direction.REVERSE);
+        preShooter.setDirection(DcMotorSimple.Direction.FORWARD);
     }
     public void setPowerScale(double scale) {
         powerScale = scale;
     }
     public void intake() {
         intake.setPower(1.0 * powerScale);
+
     }
 
     public void outtake(){
@@ -35,6 +38,11 @@ public class IntakePreshooter {
 
     public void init(){
         intake.setPower(0.4);
+        preShooter.setPower(0);
+    }
+
+    public void shoot(){
+        preShooter.setPower(1.0 * powerScale);
     }
 
 

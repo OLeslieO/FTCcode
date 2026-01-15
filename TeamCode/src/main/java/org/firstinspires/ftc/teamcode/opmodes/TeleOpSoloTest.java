@@ -117,8 +117,7 @@ public class TeleOpSoloTest extends CommandOpModeEx {
 
         new ButtonEx(()->gamepadEx1.getButton(GamepadKeys.Button.LEFT_BUMPER))
                 .whenPressed(new ParallelCommandGroup(
-                        new InstantCommand(()->intake.intake())       )
-                )
+                        new InstantCommand(()->intake.intake()) ))
                 .whenReleased(new ParallelCommandGroup(
                         new InstantCommand(()->intake.init()))
                 );
