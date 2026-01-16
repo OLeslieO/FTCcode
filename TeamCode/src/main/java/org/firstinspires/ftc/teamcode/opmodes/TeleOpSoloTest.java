@@ -45,6 +45,7 @@ public class TeleOpSoloTest extends CommandOpModeEx {
     public boolean isShooting = false;
 
     public boolean isVelocityDetecting = false;
+    double oldTime;
 
 
     @Override
@@ -56,6 +57,8 @@ public class TeleOpSoloTest extends CommandOpModeEx {
         gamepadEx2 = new GamepadEx(gamepad2);
 
         driveCore = new NewMecanumDrive(hardwareMap);
+        ballStorage = new BallStorage(hardwareMap);
+
 
         driveCore.init();
         TeleOpDriveCommand driveCommand = new TeleOpDriveCommand(driveCore,
@@ -75,7 +78,7 @@ public class TeleOpSoloTest extends CommandOpModeEx {
         preLimitCommand = new PreLimitCommand(shooter,
                 intake,
                 led,
-                //                ballStorage,
+                                ballStorage,
 
                 ()->(isVelocityDetecting),
                 ()->(isLimitOn),
@@ -177,29 +180,29 @@ public class TeleOpSoloTest extends CommandOpModeEx {
 
     @Override
     public void run(){
+
+        double newTime = getRuntime();
+        double loopTime = newTime- oldTime;
+        double frequency = 1/loopTime;
+        oldTime = newTime;
+        ballStorage.update();
         driveCore.updateOdo();
         driveCore.update();
 
         CommandScheduler.getInstance().run();
         Vector2d robotVel = driveCore.getRobotLinearVelocity();
+        telemetry.addData("color", ballStorage.getColorQueue());
+
+        telemetry.addData("REV hun frequency", frequency);
         telemetry.addData("Robot vx (in/s)", robotVel.getX());
         telemetry.addData("Robot vy (in/s)", robotVel.getY());
         telemetry.addData("Robot speed", Math.hypot(robotVel.getX(), robotVel.getY()));
-        telemetry.addData("LF vel", driveCore.leftFront.getVelocity());
-        telemetry.addData("RF vel", driveCore.rightFront.getVelocity());
-        telemetry.addData("LR vel", driveCore.leftRear.getVelocity());
-        telemetry.addData("RR vel", driveCore.rightRear.getVelocity());
         telemetry.addData("shooter velocity", shooter.shooterLeft.getVelocity());
         telemetry.addData("Heading", Math.toDegrees(driveCore.getHeading()));
         if(isFieldCentric) telemetry.addLine("Field Centric");
         else telemetry.addLine("Robot Centric");
         if(isLimitOn) telemetry.addLine("Limit On");
         else telemetry.addLine("Limit Off");
-        if(isVelocityDetecting) telemetry.addLine("is velocity detesting" );
-        else telemetry.addLine("not detecting");
-        if(shooter.isAsTargetVelocity) telemetry.addLine("is At target velocity");
-        else telemetry.addLine("not at target vel");
-        telemetry.addData("vel diff", Math.abs(shooter.shooterRight.getVelocity()-1320));
         telemetry.update();
     }
 }
