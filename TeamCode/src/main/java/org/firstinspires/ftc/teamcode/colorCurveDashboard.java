@@ -10,6 +10,8 @@ import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 @Config
 @TeleOp(name="Color Curve Dashboard", group="Debug")
 public class colorCurveDashboard extends OpMode {
@@ -45,6 +47,7 @@ public class colorCurveDashboard extends OpMode {
         int r = color.red();
         int g = color.green();
         int b = color.blue();
+        double dis = distanceSensor.getDistance(DistanceUnit.CM);
 
         // 转 HSV
         float[] hsv = new float[3];
@@ -53,6 +56,7 @@ public class colorCurveDashboard extends OpMode {
         float H = hsv[0];
         float S = hsv[1] ;
         float V = hsv[2] ;
+
 
 
         boolean isGreen =

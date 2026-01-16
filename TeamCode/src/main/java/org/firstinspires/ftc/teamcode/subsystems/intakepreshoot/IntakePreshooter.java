@@ -37,7 +37,7 @@ public class IntakePreshooter {
     }
 
     public void init(){
-        intake.setPower(0.4);
+        intake.setPower(0);
         preShooter.setPower(0);
     }
 

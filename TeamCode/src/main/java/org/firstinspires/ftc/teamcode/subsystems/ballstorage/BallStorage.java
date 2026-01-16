@@ -2,8 +2,11 @@ package org.firstinspires.ftc.teamcode.subsystems.ballstorage;
 
 import android.graphics.Color;
 
+import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,6 +19,8 @@ public class BallStorage {
     /* ===================== 硬件 ===================== */
 
     private final RevColorSensorV3 colorSensor;
+
+    private final Rev2mDistanceSensor distanceSensor;
 
     /* ===================== HSV 缓存 ===================== */
 
@@ -48,30 +53,40 @@ public class BallStorage {
 
     private boolean ballInProgress = false;
     private int inZoneFrames = 0;
+    private boolean ballPresent = false;
+    private boolean colorLocked = false;
+    private Integer currentBallColor = null;
+
+    private int stableFrames = 0;
+    private static final int LOCK_FRAMES = 3;
+
 
     /* ===================== 构造 ===================== */
 
     public BallStorage(HardwareMap hardwareMap) {
         colorSensor = hardwareMap.get(RevColorSensorV3.class, "intakeColorSensor");
+        distanceSensor = hardwareMap.get(Rev2mDistanceSensor.class,"intakeDistanceSensor");
     }
 
     /* ===================== 主更新 ===================== */
 
     public void update() {
 
-        // 读取 RGB
+        double distance = distanceSensor.getDistance(DistanceUnit.CM);
+
+        boolean inEnterZone = distance <= 3.6;
+        boolean outExitZone = distance >= 5;
+
+        // 读取颜色
         lastR = colorSensor.red();
         lastG = colorSensor.green();
         lastB = colorSensor.blue();
-
-        // 转 HSV
         Color.RGBToHSV(lastR, lastG, lastB, hsv);
 
         float H = hsv[0];
         float S = hsv[1];
         float V = hsv[2];
 
-        // HSV 判定
         boolean isGreen =
                 H >= GREEN_MIN_H && H <= GREEN_MAX_H &&
                         S >= GREEN_MIN_S && V >= GREEN_MIN_V;
@@ -80,27 +95,44 @@ public class BallStorage {
                 H >= PURPLE_MIN_H && H <= PURPLE_MAX_H &&
                         S >= PURPLE_MIN_S;
 
-        boolean isBallInZone = isGreen || isPurple;
+        /* ---------- 球进入 ---------- */
 
-        /* ---------- 抗抖逻辑 ---------- */
+        if (inEnterZone && !ballPresent) {
+            ballPresent = true;
+            colorLocked = false;
+            currentBallColor = null;
+            stableFrames = 0;
+        }
 
-        if (isBallInZone) {
-            inZoneFrames++;
+        /* ---------- 颜色锁定（球仍在） ---------- */
 
-            if (inZoneFrames >= MIN_IN_ZONE_FRAMES) {
-                hueSamples.add(H);
-                ballInProgress = true;
+        if (ballPresent && !colorLocked) {
+
+            if (isGreen || isPurple) {
+                stableFrames++;
+            } else {
+                stableFrames = 0; // 颜色不稳定直接清
             }
 
-        } else {
-            // 离开 zone，且之前确实有球
-            if (ballInProgress) {
-                finalizeBall();
-            }
+            if (stableFrames >= LOCK_FRAMES) {
+                colorLocked = true;
+                currentBallColor = isPurple ? 1 : 0;
 
-            inZoneFrames = 0;
-            ballInProgress = false;
-            hueSamples.clear();
+                // ⚠️ 关键：在“球还没离开”时就入队
+                colorQueue.offer(currentBallColor);
+                while (colorQueue.size() > MAX_BALLS) {
+                    colorQueue.poll();
+                }
+            }
+        }
+
+        /* ---------- 球离开 ---------- */
+
+        if (ballPresent && outExitZone) {
+            ballPresent = false;
+            colorLocked = false;
+            currentBallColor = null;
+            stableFrames = 0;
         }
     }
 
