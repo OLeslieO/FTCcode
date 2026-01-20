@@ -8,10 +8,10 @@ public enum ShooterConstants {
 
     SHOOTER_IDLE_VELOCITY(500),
 
-    SHOOTER_P(38),
+    SHOOTER_P(40),
     SHOOTER_I(0),
     SHOOTER_D(17),
-    SHOOTER_F(12.7)
+    SHOOTER_F(17.5)
     ;
 
     public final double value;

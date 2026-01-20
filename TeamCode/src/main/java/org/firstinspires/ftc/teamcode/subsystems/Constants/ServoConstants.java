@@ -8,7 +8,7 @@ public enum ServoConstants {
 
     SHOOTER_TURRET_SLOW(0.54),
     SHOOTER_TURRET_MID(0.35),
-    SHOOTER_TURRET_LONG(0.35),
+    SHOOTER_TURRET_LONG(0.34),
 
     PRELIMIT_ON(0.68),
     PRELIMIT_OFF(1),
