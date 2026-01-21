@@ -1,154 +1,85 @@
 package org.firstinspires.ftc.teamcode.subsystems.ballstorage;
 
 import android.graphics.Color;
-
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class BallStorage {
 
-
     private final RevColorSensorV3 colorSensor;
-
-
     private final float[] hsv = new float[3];
-    private int lastR, lastG, lastB;
+    private final ElapsedTime timer = new ElapsedTime();
 
+    private boolean wasInZone = false;     // 上一帧是否检测到球
+    private boolean ballConfirmed = false; // 是否满
 
+    private static final double THRESHOLD_MS = 500; // 停留/消失时间阈值
 
-    // Green
-    public static double GREEN_MIN_H = 150;
-    public static double GREEN_MAX_H = 170;
-    public static double GREEN_MIN_S = 0.6;
-    public static double GREEN_MIN_V = 0.0;
+    private static final float GREEN_MIN_H = 150;
+    private static final float GREEN_MAX_H = 170;
+    private static final float GREEN_MIN_S = 0.6f;
+    private static final float GREEN_MIN_V = 0.0f;
 
-    // Purple
-    public static double PURPLE_MIN_H = 205;
-    public static double PURPLE_MAX_H = 240;
-    public static double PURPLE_MIN_S = 0.4;
-
-
-    private static final int MIN_IN_ZONE_FRAMES = 3;
-
-    
-    private static final int MAX_BALLS = 3;
-
-
-
-    private final List<Float> hueSamples = new ArrayList<>();
-    private final Queue<Integer> colorQueue = new LinkedList<>();
-
-    private boolean ballInProgress = false;
-    private int inZoneFrames = 0;
-
-
+    private static final float PURPLE_MIN_H = 205;
+    private static final float PURPLE_MAX_H = 240;
+    private static final float PURPLE_MIN_S = 0.4f;
 
     public BallStorage(HardwareMap hardwareMap) {
         colorSensor = hardwareMap.get(RevColorSensorV3.class, "intakeColorSensor");
     }
 
-
-
     public void update() {
+        int r = colorSensor.red();
+        int g = colorSensor.green();
+        int b = colorSensor.blue();
 
-        lastR = colorSensor.red();
-        lastG = colorSensor.green();
-        lastB = colorSensor.blue();
-
-        Color.RGBToHSV(lastR, lastG, lastB, hsv);
+        Color.RGBToHSV(r, g, b, hsv);
 
         float H = hsv[0];
         float S = hsv[1];
         float V = hsv[2];
 
-        boolean isGreen =
-                H >= GREEN_MIN_H && H <= GREEN_MAX_H &&
-                        S >= GREEN_MIN_S && V >= GREEN_MIN_V;
+        // 判断是否有球：绿色或紫色球
+        boolean isGreen = (H >= GREEN_MIN_H && H <= GREEN_MAX_H) &&
+                (S >= GREEN_MIN_S && V >= GREEN_MIN_V);
+        boolean isPurple = (H >= PURPLE_MIN_H && H <= PURPLE_MAX_H) &&
+                (S >= PURPLE_MIN_S);
 
-        boolean isPurple =
-                H >= PURPLE_MIN_H && H <= PURPLE_MAX_H &&
-                        S >= PURPLE_MIN_S;
+        boolean isInZone = isGreen || isPurple;
 
-        boolean isBallInZone = isGreen || isPurple;
-
-
-
-        if (isBallInZone) {
-            inZoneFrames++;
-
-            if (inZoneFrames >= MIN_IN_ZONE_FRAMES) {
-                hueSamples.add(H);
-                ballInProgress = true;
+        if (isInZone) {
+            if (!wasInZone) {
+                // 刚进入检测区，重置计时器
+                timer.reset();
             }
 
+            // 如果球停留超过阈值，标记满
+            if (!ballConfirmed && timer.milliseconds() >= THRESHOLD_MS) {
+                ballConfirmed = true;
+            }
         } else {
-            if (ballInProgress) {
-                finalizeBall();
+            if (wasInZone) {
+                // 刚离开检测区，重置计时器
+                timer.reset();
             }
 
-            inZoneFrames = 0;
-            ballInProgress = false;
-            hueSamples.clear();
-        }
-    }
-
-
-    private void finalizeBall() {
-
-        if (hueSamples.isEmpty()) return;
-
-        Collections.sort(hueSamples);
-        float medianHue = hueSamples.get(hueSamples.size() / 2);
-
-        if (medianHue >= PURPLE_MIN_H && medianHue <= PURPLE_MAX_H) {
-            colorQueue.offer(1); // Purple
-        } else if (medianHue >= GREEN_MIN_H && medianHue <= GREEN_MAX_H) {
-            colorQueue.offer(0); // Green
+            // 如果没有球超过阈值时间，标记不满
+            if (ballConfirmed && timer.milliseconds() >= THRESHOLD_MS) {
+                ballConfirmed = false;
+            }
         }
 
-        while (colorQueue.size() > MAX_BALLS) {
-            colorQueue.poll();
-        }
+        wasInZone = isInZone;
     }
 
-
-    public int getBallCount() {
-        return colorQueue.size();
-    }
-
+    /** 是否满：球停留超过阈值且没消失超过阈值 */
     public boolean isFull() {
-        return colorQueue.size() >= MAX_BALLS;
+        return ballConfirmed;
     }
 
-    /** 0 = Green, 1 = Purple */
-    public Queue<Integer> getColorQueue() {
-        return colorQueue;
-    }
-
-    public void reset() {
-        colorQueue.clear();
-        hueSamples.clear();
-        inZoneFrames = 0;
-        ballInProgress = false;
-    }
-
-
-    public int getR() { return lastR; }
-    public int getG() { return lastG; }
-
-    public int getB() { return lastB; }
-
+    /** 调试用 */
     public float getHue() { return hsv[0]; }
     public float getSaturation() { return hsv[1]; }
     public float getValue() { return hsv[2]; }
-
-    public boolean isDetectingBall() {
-        return ballInProgress;
-    }
 }

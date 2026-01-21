@@ -53,7 +53,7 @@ public class Shooter {
 //        shooterMid.setVelocity(ShooterConstants.SHOOTER_MID_VELOCITY.value);
         shooterAngleServo.setPosition(ServoConstants.SHOOTER_TURRET_MID.value);
         targetVelocity = ShooterConstants.SHOOTER_MID_VELOCITY.value;
-        isAsTargetVelocity = Math.abs(shooterRight.getVelocity() - ShooterConstants.SHOOTER_MID_VELOCITY.value) <= 40;
+        isAsTargetVelocity = Math.abs(shooterRight.getVelocity() - ShooterConstants.SHOOTER_MID_VELOCITY.value) <= 60;
     }
     public void accelerate_slow(){
         shooterLeft.setVelocity(ShooterConstants.SHOOTER_SLOW_VELOCITY.value);
@@ -66,7 +66,7 @@ public class Shooter {
         shooterRight.setVelocity(ShooterConstants.SHOOTER_FAST_VELOCITY.value);
 //        shooterMid.setVelocity(ShooterConstants.SHOOTER_FAST_VELOCITY.value);
         shooterAngleServo.setPosition(ServoConstants.SHOOTER_TURRET_LONG.value);
-        isAsTargetVelocity = Math.abs(shooterLeft.getVelocity() - ShooterConstants.SHOOTER_FAST_VELOCITY.value) <= 40;
+        isAsTargetVelocity = Math.abs(shooterLeft.getVelocity() - ShooterConstants.SHOOTER_FAST_VELOCITY.value) <= 60;
     }
 
     public void accelerate_idle(){
