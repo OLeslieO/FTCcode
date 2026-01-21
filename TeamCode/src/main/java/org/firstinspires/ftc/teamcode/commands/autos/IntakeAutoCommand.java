@@ -47,6 +47,7 @@ public class IntakeAutoCommand extends CommandBase {
 
                 break;
             case OUTTAKE:
+
             case INIT:
 
                 break;
@@ -68,7 +69,6 @@ public class IntakeAutoCommand extends CommandBase {
                 break;
 
             case HOLD:
-
                 break;
         }
     }

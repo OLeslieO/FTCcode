@@ -18,17 +18,19 @@ public class Constants {
     public static FollowerConstants followerConstants = new FollowerConstants()
 
         .useSecondaryDrivePIDF(true)
-
-        .mass(20)
+        .useSecondaryHeadingPIDF(true)
+        .mass(14)
         .forwardZeroPowerAcceleration(-28.7)
         .lateralZeroPowerAcceleration(-63)
         .translationalPIDFCoefficients(new PIDFCoefficients(0.1, 0, 0, 0.02))
-        .headingPIDFCoefficients(new PIDFCoefficients(0.8, 0, 0, 0.02))
-        .drivePIDFCoefficients(new FilteredPIDFCoefficients(1,0.0,0.015,0.75,0.019))
+        .headingPIDFCoefficients(new PIDFCoefficients(0.9, 0, 0.02, 0.02))
+        .drivePIDFCoefficients(new FilteredPIDFCoefficients(1,0.0,0.015,0.8,0.019))
+        .secondaryDrivePIDFCoefficients(new FilteredPIDFCoefficients(0.01,0,0.000005,0.6,0.01))
+        .secondaryHeadingPIDFCoefficients(new PIDFCoefficients(0.0000001,0,0.02,0.01))
         .centripetalScaling(0.0008);
 
-    public static PathConstraints pathConstraints = new PathConstraints(0.99, 100, 3
-            , 2.5);
+    public static PathConstraints pathConstraints = new PathConstraints(0.99, 100, 2.5
+            , 3);
 
     public static Follower createFollower(HardwareMap hardwareMap) {
         return new FollowerBuilder(followerConstants, hardwareMap)
@@ -45,9 +47,7 @@ public class Constants {
             .rightRearMotorName("rightRear")
             .leftRearMotorName("leftRear")
             .leftFrontMotorName("leftFront")
-
             .useBrakeModeInTeleOp(true)
-
             .rightFrontMotorDirection(DcMotorEx.Direction.FORWARD)
             .leftFrontMotorDirection(DcMotorEx.Direction.REVERSE)
             .leftRearMotorDirection(DcMotorEx.Direction.REVERSE)
