@@ -211,12 +211,8 @@ public class TeleOpSoloTest2 extends CommandOpModeEx {
         driveCore.updateOdo();
         driveCore.update();
         ballStorage.update();
-        telemetry.addData("color", ballStorage.getColorQueue());
-        if (Math.abs(shooter.shooterRight.getVelocity()-1320)<= 40){
-            shooter.isAsTargetVelocity = true;
-        } else {
-            shooter.isAsTargetVelocity = false;
-        }
+//        telemetry.addData("color", ballStorage.getColorQueue());
+        shooter.isAsTargetVelocity = Math.abs(shooter.shooterRight.getVelocity() - 1320) <= 40;
         CommandScheduler.getInstance().run();
         Vector2d robotVel = driveCore.getRobotLinearVelocity();
         if(isAutoShoot)telemetry.addLine("AutoShoot");

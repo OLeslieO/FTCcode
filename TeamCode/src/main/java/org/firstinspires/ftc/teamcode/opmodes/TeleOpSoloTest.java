@@ -136,7 +136,7 @@ public class TeleOpSoloTest extends CommandOpModeEx {
                         new SequentialCommandGroup(
                                 new WaitCommand(150),
                                 new InstantCommand(()->isVelocityDetecting= ! isVelocityDetecting),
-                                new InstantCommand(() -> shooter.accelerate_slow())
+                                new InstantCommand(() -> shooter.accelerate_idle())
                         )
                 );
 
@@ -155,7 +155,7 @@ public class TeleOpSoloTest extends CommandOpModeEx {
                                 new InstantCommand(()->isVelocityDetecting=false),
                                 new InstantCommand(()->intake.setPowerScale(1.0)),
                                 new InstantCommand(()->shooter.setPowerScale(1.0)),
-                                new InstantCommand(() -> shooter.accelerate_slow())
+                                new InstantCommand(() -> shooter.accelerate_idle())
                         )
                 );
 
@@ -191,18 +191,17 @@ public class TeleOpSoloTest extends CommandOpModeEx {
 
         CommandScheduler.getInstance().run();
         Vector2d robotVel = driveCore.getRobotLinearVelocity();
-        telemetry.addData("color", ballStorage.getColorQueue());
 
-        telemetry.addData("REV hun frequency", frequency);
-        telemetry.addData("Robot vx (in/s)", robotVel.getX());
-        telemetry.addData("Robot vy (in/s)", robotVel.getY());
-        telemetry.addData("Robot speed", Math.hypot(robotVel.getX(), robotVel.getY()));
-        telemetry.addData("shooter velocity", shooter.shooterLeft.getVelocity());
-        telemetry.addData("Heading", Math.toDegrees(driveCore.getHeading()));
-        if(isFieldCentric) telemetry.addLine("Field Centric");
-        else telemetry.addLine("Robot Centric");
-        if(isLimitOn) telemetry.addLine("Limit On");
-        else telemetry.addLine("Limit Off");
+//        telemetry.addData("REV hun frequency", frequency);
+//        telemetry.addData("Robot vx (in/s)", robotVel.getX());
+//        telemetry.addData("Robot vy (in/s)", robotVel.getY());
+//        telemetry.addData("Robot speed", Math.hypot(robotVel.getX(), robotVel.getY()));
+//        telemetry.addData("shooter velocity", shooter.shooterLeft.getVelocity());
+//        telemetry.addData("Heading", Math.toDegrees(driveCore.getHeading()));
+//        if(isFieldCentric) telemetry.addLine("Field Centric");
+//        else telemetry.addLine("Robot Centric");
+//        if(isLimitOn) telemetry.addLine("Limit On");
+//        else telemetry.addLine("Limit Off");
         telemetry.update();
     }
 }
